@@ -3,7 +3,7 @@ crystaltoolkit-extension==0.6.0
 dash==2.18.1
 dash-bootstrap-components==1.6.0
 numpy==1.26.4
-pymatgen==2024.8.9
+pymatgen
 pymongo==4.10.1
 gunicorn==23.0.0
 pandas==2.2.3
