@@ -1,10 +1,9 @@
-crystal_toolkit==2024.10.22
+crystal-toolkit==2023.11.3
 dash==2.18.1
-dash_bootstrap_components==1.6.0
-numpy==1.25.2
-pymatgen==2024.11.13
-pymatgen_db==2023.7.18
+dash-bootstrap-components==1.6.0
+numpy==1.26.4
+pymatgen==2024.8.9
 pymongo==4.10.1
-gunicorn
-pandas
-dash-tools
+gunicorn==23.0.0
+pandas==2.2.3
+dash-tools==1.12.0
