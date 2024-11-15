@@ -495,7 +495,7 @@ my_layout = html.Div([
                id="colorband-dos-collapse",
                is_open=False
             ),
-            dbc.Button("Expand Band and DOS Graph,", id="band-toggle", color="link")
+            dbc.Button("Expand Band and DOS Graph,", id="band-graph-toggle", color="link")
         ], style={'margin-bottom': '30px'}
     ),
 ])
@@ -658,8 +658,8 @@ def toggle_klabels_collapse(n, is_open):
 @app.callback(
     Output("colorband-dos-graph", "figure"),
     Output("colorband-dos-collapse", "is_open"),
-    Input("band-toggle", "n_clicks"),
-    State("band-toggle", "n_clicks"),
+    Input("band-graph-toggle", "n_clicks"),
+    State("band-graph-toggle", "n_clicks"),
     prevent_initial_call=True
 )
 def update_band_graph(n_clicks, is_open):
