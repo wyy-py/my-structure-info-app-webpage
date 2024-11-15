@@ -318,6 +318,11 @@ bg_data = material_data.get("metadata", {}).get("band", {})
 band_data = bg_data.get("band_gap", {})
 klabels_data = bg_data.get("Klabels", {})
 
+band_data_file = DATA_PATH.joinpath("bg-3/vasprun.xml")
+kpoints_file = DATA_PATH.joinpath("bg-3/KPOINTS")
+klabels_filename = DATA_PATH.joinpath("bg-3/KLABELS")
+dos_data_file = DATA_PATH.joinpath("dos-1/vasprun.xml")
+
 # Convert material property information to HTML
 properties_layout = html.Div(
     children=[
@@ -485,17 +490,11 @@ my_layout = html.Div([
                 is_open=False,  # 默认折叠
                 style=content_style
             ),
-            dbc.Collapse(
-               dcc.Graph(
-                   id="colorband-dos-graph",
-                   figure={},
-                   # 直接使用 colorbandfig 作为图形
-                   mathjax=True
-               ),
-               id="colorband-dos-collapse",
-               is_open=False
-            ),
-            dbc.Button("Expand Band and DOS Graph,", id="band-graph-toggle", color="link")
+            dcc.Graph(
+                id="colorband-dos-graph",
+                figure=plot_band_and_dos(band_data_file, dos_data_file, kpoints_file, klabels_filename),  # 直接使用 colorbandfig 作为图形
+                mathjax=True
+            )
         ], style={'margin-bottom': '30px'}
     ),
 ])
@@ -654,26 +653,26 @@ def toggle_klabels_collapse(n, is_open):
     if n:
         return not is_open
     return is_open
-# 回调：生成并更新 Band 和 DOS 图形
-@app.callback(
-    Output("colorband-dos-graph", "figure"),
-    Output("colorband-dos-collapse", "is_open"),
-    Input("band-graph-toggle", "n_clicks"),
-    State("band-graph-toggle", "n_clicks"),
-    prevent_initial_call=True
-)
-def update_band_graph(n_clicks, is_open):
-    # 如果展开按钮被点击，生成并返回新的图形
-    if n_clicks:
-        # 假设已有 band_data, dos_data, kpoints_data 和 klabels_data 数据可用
-        band_data_file = DATA_PATH.joinpath("bg-3/vasprun.xml")
-        kpoints_file = DATA_PATH.joinpath("bg-3/KPOINTS")
-        klabels_filename = DATA_PATH.joinpath("bg-3/KLABELS")
-        dos_data_file = DATA_PATH.joinpath("dos-1/vasprun.xml")
+# 回调：生成并更新 Band 和 DOS 图形，如果希望点击后再展开图形的话
+# @app.callback(
+#    Output("colorband-dos-graph", "figure"),
+#    Output("colorband-dos-collapse", "is_open"),
+#    Input("band-graph-toggle", "n_clicks"),
+#    State("band-graph-toggle", "n_clicks"),
+#    prevent_initial_call=True
+#)
+# def update_band_graph(n_clicks, is_open):
+#    # 如果展开按钮被点击，生成并返回新的图形
+#    if n_clicks:
+#        # 假设已有 band_data, dos_data, kpoints_data 和 klabels_data 数据可用
+#        band_data_file = DATA_PATH.joinpath("bg-3/vasprun.xml")
+#        kpoints_file = DATA_PATH.joinpath("bg-3/KPOINTS")
+#        klabels_filename = DATA_PATH.joinpath("bg-3/KLABELS")
+#        dos_data_file = DATA_PATH.joinpath("dos-1/vasprun.xml")
 
-        fig = plot_band_and_dos(band_data_file, dos_data_file, kpoints_file, klabels_filename)
-        return fig, True
-    return {}, False  # 默认返回一个空图形，直到展开按钮被点击
+#        fig = plot_band_and_dos(band_data_file, dos_data_file, kpoints_file, klabels_filename)
+#        return fig, True
+#    return {}, False  # 默认返回一个空图形，直到展开按钮被点击
 # Register layout with the app
 ctc.register_crystal_toolkit(app, layout=my_layout)
  
